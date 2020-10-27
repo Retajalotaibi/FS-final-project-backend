@@ -6,11 +6,22 @@ const userSchema = new Schema({
   email: { type: String, unique: true },
   password: String,
   salt: String,
-  Courses: [],
+  Courses: [
+    { title: String, completed: Boolean },
+    { title: String, completed: Boolean },
+    { title: String, completed: Boolean },
+    { title: String, completed: Boolean },
+    { title: String, completed: Boolean },
+    { title: String, completed: Boolean },
+    { title: String, completed: Boolean },
+    { title: String, completed: Boolean },
+    { title: String, completed: Boolean },
+  ],
 });
 userSchema.pre("save", async function (next) {
+  const salt = "secret";
   this.salt = shortId.generate();
-  this.password = await hashPassword(this.password, this.salt);
+  this.password = await hashPassword(this.password, salt);
   console.log(this.password);
   next();
 });

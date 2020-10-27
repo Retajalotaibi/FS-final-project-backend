@@ -6,24 +6,33 @@ const Joi = require("@hapi/joi");
 
 function setUpRoutes(app) {
   var urlencodedParser = bodyParser.urlencoded({ extended: false });
+  const salt = "secret";
 
-  app.get("/homepage", urlencodedParser, async (req, res) => {});
-
-  app.get("/profile", async (req, res) => {
+  app.get("/", async (req, res) => {
     try {
-      const decodedToken = jwt.decode(token);
+      await userModel.find(async (err, User) => {
+        const token = req.headers.authorization;
+        // const verify = jwt.verify(token, salt);
+        // console.log(verify);
+        console.log(token, "tokrn");
+        if (!token) {
+          res.send("you dont have permission");
+          return;
+        }
 
-      const user = await userModel.findById(decodedToken.sub);
-      if (!user) {
-        console.log("you dont have permisson");
-      }
-      jwt.verify(token, user.salt);
+        const decodedToken = jwt.decode(token);
+        console.log(decodedToken);
+        const user = await userModel.findById(decodedToken.sub);
+        if (!user) {
+          console.log("you dont have permisson");
+        }
+        // jwt.verify(token, salt);
+        res.send(user);
+      });
     } catch (error) {
+      console.log(error, "error");
       res.status(401).send({ error: error });
     }
-    await userModel.find({}, (err, data) => {
-      res.json(data);
-    });
   });
 
   app.post("/register", urlencodedParser, async (req, res) => {
@@ -58,23 +67,24 @@ function setUpRoutes(app) {
   app.post("/login", urlencodedParser, async (req, res) => {
     try {
       const { email, password } = req.body;
+
       console.log(req.body, "req.body");
       const userAcc = await userModel.findOne({ email });
 
       if (!userAcc) {
-        // res.statusCode(404);
+        res.statusCode(404);
 
         res.send("user not found");
       } else {
-        if (userAcc.password === hashPassword(password, userAcc.salt)) {
-          const token = jwt.sign({ sub: userAcc._id }, "" + userAcc.salt, {
-            expiresIn: 3000,
+        if (userAcc.password === hashPassword(password, salt)) {
+          const token = jwt.sign({ sub: userAcc._id }, "" + salt, {
+            expiresIn: 3000000000000,
           });
 
           res.send(token);
           console.log("successfully logged in ");
         } else {
-          // res.statusCode = 403;
+          res.statusCode = 403;
           console.log("password is wrong ");
           res.send("password is wrong");
         }
