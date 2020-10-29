@@ -10,7 +10,7 @@ function setUpRoutes(app) {
 
   app.get("/", async (req, res) => {
     try {
-      await userModel.find(async (err, User) => {
+      await userModel.find(async () => {
         const token = req.headers.authorization;
         // const verify = jwt.verify(token, salt);
         // console.log(verify);
@@ -31,7 +31,7 @@ function setUpRoutes(app) {
       });
     } catch (error) {
       console.log(error, "error");
-      res.status(401).send({ error: error });
+      // res.status(401).send({ error: error });
     }
   });
 
@@ -78,7 +78,7 @@ function setUpRoutes(app) {
       } else {
         if (userAcc.password === hashPassword(password, salt)) {
           const token = jwt.sign({ sub: userAcc._id }, "" + salt, {
-            expiresIn: 3000000000000,
+            expiresIn: 30000000000000000000000,
           });
 
           res.send(token);
