@@ -78,8 +78,8 @@ function setUpRoutes(app) {
       if (!userAcc) {
         res.send("user not found");
       } else {
-        if (userAcc.password === hashPassword(password, salt)) {
-          const token = jwt.sign({ sub: userAcc._id }, "" + salt, {
+        if (userAcc.password === hashPassword(password, userAcc.salt)) {
+          const token = jwt.sign({ sub: userAcc._id }, "" + userAcc.salt, {
             expiresIn: 30000000000000000000000,
           });
 
