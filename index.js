@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const setUpRoutes = require("./models/routes");
@@ -6,14 +7,11 @@ const cors = require("cors");
 
 const start = async () => {
   try {
-    await mongoose.connect(
-      "mongodb+srv://Aziz:Aziz1234@cluster0.ynpi5.mongodb.net/Final-project-barmej?authSource=admin&replicaSet=atlas-hh9b4k-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-      }
-    );
+    await mongoose.connect(process.env.DB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
     console.log("Connected to mongoDB");
 
     const app = express();
@@ -25,7 +23,8 @@ const start = async () => {
     setUpRoutes(app);
     console.log("app routes is set up lets listen to the port ");
 
-    app.listen(4000);
+    const port = process.env.PORT || 4000;
+    app.listen(port);
   } catch (error) {
     console.error(error);
   }

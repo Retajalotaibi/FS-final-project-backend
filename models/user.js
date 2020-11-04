@@ -1,11 +1,12 @@
 const { Schema, model } = require("mongoose");
 const shortId = require("shortid");
 const hashPassword = require("../helper");
+const { string } = require("@hapi/joi");
 const userSchema = new Schema({
   username: String,
   email: { type: String, unique: true },
   password: String,
-  number: Number,
+  number: String,
   city: String,
   salt: String,
   Courses: [
