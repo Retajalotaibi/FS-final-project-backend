@@ -22,9 +22,7 @@ const start = async () => {
 
     setUpRoutes(app);
     console.log("app routes is set up lets listen to the port ");
-
-    const port = process.env.PORT || 4000;
-    app.listen(port);
+    app.listen(process.env.PORT || 4000);
   } catch (error) {
     console.error(error);
   }
