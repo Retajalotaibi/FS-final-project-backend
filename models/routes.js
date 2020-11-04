@@ -26,20 +26,22 @@ function setUpRoutes(app) {
         if (!user) {
           console.log("you dont have permisson");
         }
-        // jwt.verify(token, salt);
+        //jwt.verify(token, salt);
         res.send(user);
       });
     } catch (error) {
       console.log(error, "error");
-      // res.status(401).send({ error: error });
+      res.status(401).send({ error: error });
     }
   });
 
   app.post("/register", urlencodedParser, async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email, password, city, number } = req.body;
     const bodySchema = Joi.object({
       email: Joi.string().email().required(),
       username: Joi.string().required(),
+      number: Joi.number().required(),
+      city: Joi.string().required(),
       password: Joi.string().min(6).required(),
     });
     const validationResult = bodySchema.validate(req.body);
@@ -53,6 +55,8 @@ function setUpRoutes(app) {
       const newUser = new userModel({
         username,
         email,
+        number,
+        city,
         password,
       });
 
@@ -72,8 +76,6 @@ function setUpRoutes(app) {
       const userAcc = await userModel.findOne({ email });
 
       if (!userAcc) {
-        res.statusCode(404);
-
         res.send("user not found");
       } else {
         if (userAcc.password === hashPassword(password, salt)) {
