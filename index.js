@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const setUpRoutes = require("./models/routes");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
+//const cookieParser = require("cookie-parser");
 
 const start = async () => {
   try {
@@ -20,7 +20,7 @@ const start = async () => {
 
     app.use(cors());
     app.use(express.json());
-    app.use(cookieParser());
+    //app.use(cookieParser());
 
     setUpRoutes(app);
     console.log("app routes is set up lets listen to the port ");
