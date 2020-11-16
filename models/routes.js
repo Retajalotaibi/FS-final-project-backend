@@ -10,10 +10,8 @@ function setUpRoutes(app) {
 
   app.get("/", async (req, res) => {
     try {
+      const token = req.headers.authorization;
       await userModel.find(async () => {
-        const token = req.headers.authorization;
-        // const verify = jwt.verify(token, salt);
-        // console.log(verify);
         console.log(token, "tokrn");
         if (!token) {
           res.send("you dont have permission");
@@ -22,12 +20,14 @@ function setUpRoutes(app) {
 
         const decodedToken = jwt.decode(token);
         console.log(decodedToken);
-        const user = await userModel.findById(decodedToken.sub);
-        if (!user) {
-          console.log("you dont have permisson");
+        if (decodedToken.sub) {
+          const user = await userModel.findById(decodedToken.sub);
+          if (!user) {
+            console.log("you dont have permisson");
+          }
+          // jwt.verify(token, salt);
+          res.send(user);
         }
-        //jwt.verify(token, salt);
-        res.send(user);
       });
     } catch (error) {
       console.log(error, "error");
@@ -78,8 +78,8 @@ function setUpRoutes(app) {
       if (!userAcc) {
         res.send("user not found");
       } else {
-        if (userAcc.password === hashPassword(password, salt)) {
-          const token = jwt.sign({ sub: userAcc._id }, "" + salt, {
+        if (userAcc.password === hashPassword(password, userAcc.salt)) {
+          const token = jwt.sign({ sub: userAcc._id }, "" + userAcc.salt, {
             expiresIn: 30000000000000000000000,
           });
 
@@ -98,7 +98,3 @@ function setUpRoutes(app) {
 }
 
 module.exports = setUpRoutes;
-
-//////////////////////////////
-////code i might use//////////
-//////////////////////////////
