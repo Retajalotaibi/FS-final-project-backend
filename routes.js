@@ -1,6 +1,6 @@
-const userModel = require("./user");
+const userModel = require("./models/user");
 const bodyParser = require("body-parser");
-const hashPassword = require("../helper.js");
+const hashPassword = require("./helper.js");
 const jwt = require("jsonwebtoken");
 const Joi = require("@hapi/joi");
 
