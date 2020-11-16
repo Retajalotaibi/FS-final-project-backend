@@ -1,6 +1,6 @@
-const userModel = require("./user");
+const userModel = require("./models/user");
 const bodyParser = require("body-parser");
-const hashPassword = require("../helper.js");
+const hashPassword = require("./helper.js");
 const jwt = require("jsonwebtoken");
 const Joi = require("@hapi/joi");
 
@@ -21,13 +21,15 @@ function setUpRoutes(app) {
         }
 
         const decodedToken = jwt.decode(token);
-        console.log(decodedToken);
-        const user = await userModel.findById(decodedToken.sub);
-        if (!user) {
-          console.log("you dont have permisson");
+        if (decodedToken.sub) {
+          console.log(decodedToken);
+          const user = await userModel.findById(decodedToken.sub);
+          if (!user) {
+            console.log("you dont have permisson");
+          }
+          //jwt.verify(token, salt);
+          res.send(user);
         }
-        //jwt.verify(token, salt);
-        res.send(user);
       });
     } catch (error) {
       console.log(error, "error");
