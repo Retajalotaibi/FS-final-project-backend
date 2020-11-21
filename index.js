@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const cors = require("cors");
-const Routes = require("./Routes");
+const Routes = require("./routes");
 const start = async () => {
   try {
     await mongoose.connect(process.env.DB_URL, {
