@@ -76,6 +76,7 @@ function setUpRoutes(app) {
       const userAcc = await userModel.findOne({ email });
 
       if (!userAcc) {
+        res.statusCode = 400;
         res.send("user not found");
       } else {
         if (userAcc.password === hashPassword(password, userAcc.salt)) {
