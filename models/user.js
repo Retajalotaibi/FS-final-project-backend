@@ -25,7 +25,6 @@ userSchema.pre("save", async function (next) {
   const salt = "secret";
   this.salt = shortId.generate();
   this.password = await hashPassword(this.password, this.salt);
-  console.log(this.password);
   next();
 });
 

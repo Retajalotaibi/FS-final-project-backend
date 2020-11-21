@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const cors = require("cors");
-const Routess = require("./Routess");
+const Routes = require("./Routes");
 const start = async () => {
   try {
     await mongoose.connect(process.env.DB_URL, {
@@ -17,7 +17,7 @@ const start = async () => {
 
     app.use(cors());
     app.use(express.json());
-    app.use(Routess);
+    app.use(Routes);
     //setUpRoutes(app);
     console.log("app routes is set up lets listen to the port ");
     app.listen(process.env.PORT || 4000);
