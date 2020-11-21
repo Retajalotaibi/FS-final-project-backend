@@ -2,6 +2,10 @@
   "name": "final-project-backend-fs",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "14.9.0",
+    "npm": "6.14.8"
+  },
   "main": "index.js",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
