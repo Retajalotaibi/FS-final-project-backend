@@ -16,10 +16,10 @@ const start = async () => {
     const app = express();
 
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cors());
     app.use(express.json());
-    app.use(Routes);
+    app.use("/api/v1", Routes);
     //setUpRoutes(app);
     //hi
     console.log("app routes is set up lets listen to the port ");
