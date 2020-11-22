@@ -25,8 +25,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
-    "build": "node index.js",
-    "heroku-prebuild": "npm install --only=dev"
+    "build": "node index.js"
   },
   "author": "",
   "license": "UNLICENSED"
