@@ -21,6 +21,7 @@ const start = async () => {
     app.use(express.json());
     app.use(Routes);
     //setUpRoutes(app);
+    //hi
     console.log("app routes is set up lets listen to the port ");
     const PORT = process.env.PORT || 4000;
     app.listen(PORT);
